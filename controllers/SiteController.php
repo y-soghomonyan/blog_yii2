@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\User;
 
 class SiteController extends Controller
 {
@@ -124,6 +125,31 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionRegister()
+    {
+        return $this->render('registration');
+    }
+
+    public function actionSignUp()
+    {
+        $request = Yii::$app->request->post();
+
+        $user = new User();
+        $user->attributes = $request;
+        $user->username = $user->email;
+        $user->password = Yii::$app->getSecurity()->generatePasswordHash($user->password);//Hash password before storing to DB
+        $session = Yii::$app->session;
+
+        if($user->validate() && $user->save())
+        {
+            $session->setFlash('successMessage', 'Registration successful');
+            return $this->redirect(['site/login']);
+        }
+
+        $session->setFlash('errorMessages', $user->getErrors());
+        return $this->redirect(['site/register']);
     }
 
 }

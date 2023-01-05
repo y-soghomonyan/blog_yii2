@@ -16,8 +16,16 @@ use yii\data\Pagination;
 
 class CrudController extends Controller{
 
+    public function authUser(){
+        if(empty(Yii::$app->user->identity->id)){
+            return Yii::$app->response->redirect(['site/login']);
+        }
+    }
+
     public function actionAddPost()
     {
+
+      $this->authUser();
 
         $model = new AddpostForm;
         $cats = $this->get_category();
@@ -59,6 +67,7 @@ class CrudController extends Controller{
    
 
     public function actionEdit ($id){
+        $this->authUser();
        
 
         $post = Posts::findone(['id' => $id]); 
@@ -107,6 +116,7 @@ class CrudController extends Controller{
     }
 
     public function actionShow (){
+        $this->authUser();
 
         // $posts = Posts::find()->all();
 
@@ -166,6 +176,7 @@ class CrudController extends Controller{
 
 
     public function actionDelete ($id){
+        $this->authUser();
         $post = Posts::findone(['id' => $id]);
         
         if($post->delete()){
