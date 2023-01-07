@@ -12,6 +12,7 @@
         "irc": "irc://irc.freenode.net/yii",
         "source": "https://github.com/yiisoft/yii2"
     },
+    "tebazil/yii2-db-seeder": "*",
     "minimum-stability": "stable",
     "require": {
         "php": ">=7.4.0",

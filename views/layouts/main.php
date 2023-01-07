@@ -9,6 +9,7 @@ use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
+//use yii\helpers\Html;
 
 
 AppAsset::register($this);
@@ -19,9 +20,11 @@ AppAsset::register($this);
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <?= Html::csrfMetaTags()?>
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
@@ -67,6 +70,7 @@ AppAsset::register($this);
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= Alert::widget() ?>
+        <button id="ajaxt_test">ajax</button>
         <?= $content ?>
     </div>
 </main>
@@ -78,7 +82,27 @@ AppAsset::register($this);
     </div>
 </footer>
 
+<script>
+    $(document).ready(function(){
+        $("#ajaxt_test").click(function(){
+          $.ajax({
+              url: "<?php echo Yii::$app->getUrlManager()->createUrl('crud/ajax'); ?>",
+              data: {test: 1233,  _csrf: yii.getCsrfToken()},
+              type:"post",
+              success:(res)=>{
+                  console.log(res);
+              },
+              error:(res)=>{
+                  console.log(res);
+              }
+          })
+        });
+
+    });
+    console.log(123333)
+</script>
 <?php $this->endBody() ?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </body>
 </html>
 <?php $this->endPage() ?>

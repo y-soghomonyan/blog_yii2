@@ -115,6 +115,7 @@ class CrudController extends Controller{
         $silka = 'https://www.youtube.com/watch?v=WHOVPeOuzjg&list=PL9XdPIVgBVVmYWGF3BFZwHu4Fz9fa6GJd&index=13';
     }
 
+
     public function actionShow (){
         $this->authUser();
 
@@ -215,4 +216,23 @@ class CrudController extends Controller{
 
         return $cats;
     }
+
+    public function actionAjax(){
+
+        $data = Yii::$app->request->post('test');
+        if (isset($data)) {
+            $test = "Ajax Worked!";
+        } else {
+            $test = "Ajax failed";
+        }
+        return \yii\helpers\Json::encode($test);
+
+        if(Yii::$app->request->isAjax){
+            return "wesdfsf";
+
+        }
+
+       // return $this->render
+    }
+
 }
